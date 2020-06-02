@@ -2,22 +2,11 @@ package vn.com.minhlq.boilerplate.common;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import vn.com.minhlq.boilerplate.constant.Status;
 
-/**
- * <p>
- * 异常基类
- * </p>
- *
- * @package: com.xkcoding.rbac.security.common
- * @description: 异常基类
- * @author: yangkai.shen
- * @date: Created in 2018-12-07 14:57
- * @copyright: Copyright (c) 2018
- * @version: V1.0
- * @modified: yangkai.shen
- */
-@EqualsAndHashCode(callSuper = true)
+
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class BaseException extends RuntimeException {
     private Integer code;
     private String message;

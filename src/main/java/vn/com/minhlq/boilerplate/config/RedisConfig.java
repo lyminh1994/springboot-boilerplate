@@ -12,26 +12,14 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.io.Serializable;
 
-/**
- * <p>
- * redis配置
- * </p>
- *
- * @package: com.xkcoding.rbac.security.config
- * @description: redis配置
- * @author: yangkai.shen
- * @date: Created in 2018-12-11 15:16
- * @copyright: Copyright (c) 2018
- * @version: V1.0
- * @modified: yangkai.shen
- */
+
 @Configuration
 @EnableCaching
 @AutoConfigureAfter(RedisAutoConfiguration.class)
 public class RedisConfig {
 
     /**
-     * 默认情况下的模板只能支持RedisTemplate<String, String>，也就是只能存入字符串，因此支持序列化
+     * By default, the template can only support RedisTemplate<String, String>, that is, only the string can be stored, so it supports serialization
      */
     @Bean
     public RedisTemplate<String, Serializable> redisCacheTemplate(LettuceConnectionFactory redisConnectionFactory) {

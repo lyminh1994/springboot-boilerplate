@@ -1,14 +1,14 @@
 package vn.com.minhlq.boilerplate.dto;
 
-import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import vn.com.minhlq.boilerplate.common.Consts;
+import vn.com.minhlq.boilerplate.constant.Consts;
 import vn.com.minhlq.boilerplate.model.Permission;
 import vn.com.minhlq.boilerplate.model.Role;
 import vn.com.minhlq.boilerplate.model.User;
@@ -18,87 +18,37 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/**
- * <p>
- * 自定义User
- * </p>
- *
- * @package: com.xkcoding.rbac.security.vo
- * @description: 自定义User
- * @author: yangkai.shen
- * @date: Created in 2018-12-10 15:09
- * @copyright: Copyright (c) 2018
- * @version: V1.0
- * @modified: yangkai.shen
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserPrincipal implements UserDetails {
-    /**
-     * 主键
-     */
+
     private Long id;
 
-    /**
-     * 用户名
-     */
     private String username;
 
-    /**
-     * 密码
-     */
     @JsonIgnore
     private String password;
 
-    /**
-     * 昵称
-     */
     private String nickname;
 
-    /**
-     * 手机
-     */
     private String phone;
 
-    /**
-     * 邮箱
-     */
     private String email;
 
-    /**
-     * 生日
-     */
     private Long birthday;
 
-    /**
-     * 性别，男-1，女-2
-     */
     private Integer sex;
 
-    /**
-     * 状态，启用-1，禁用-0
-     */
     private Integer status;
 
-    /**
-     * 创建时间
-     */
     private Long createTime;
 
-    /**
-     * 更新时间
-     */
     private Long updateTime;
 
-    /**
-     * 用户角色列表
-     */
     private List<String> roles;
 
-    /**
-     * 用户权限列表
-     */
     private Collection<? extends GrantedAuthority> authorities;
 
     public static UserPrincipal create(User user, List<Role> roles, List<Permission> permissions) {
@@ -107,7 +57,7 @@ public class UserPrincipal implements UserDetails {
                 .collect(Collectors.toList());
 
         List<GrantedAuthority> authorities = permissions.stream()
-                .filter(permission -> StrUtil.isNotBlank(permission.getPermission()))
+                .filter(permission -> StringUtils.isNotBlank(permission.getPermission()))
                 .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
                 .collect(Collectors.toList());
 

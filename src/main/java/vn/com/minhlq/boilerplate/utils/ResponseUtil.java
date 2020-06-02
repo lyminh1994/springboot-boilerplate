@@ -5,33 +5,21 @@ import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import vn.com.minhlq.boilerplate.common.ApiResponse;
 import vn.com.minhlq.boilerplate.common.BaseException;
-import vn.com.minhlq.boilerplate.common.IStatus;
+import vn.com.minhlq.boilerplate.constant.IStatus;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * <p>
- * Response 通用工具类
- * </p>
- *
- * @package: com.xkcoding.rbac.security.util
- * @description: Response 通用工具类
- * @author: yangkai.shen
- * @date: Created in 2018-12-07 17:37
- * @copyright: Copyright (c) 2018
- * @version: V1.0
- * @modified: yangkai.shen
- */
+
 @Slf4j
 public class ResponseUtil {
 
     /**
-     * 往 response 写出 json
+     * Write json to response
      *
-     * @param response 响应
-     * @param status   状态
-     * @param data     返回数据
+     * @param response Response
+     * @param status   Status
+     * @param data     Return data
      */
     public static void renderJson(HttpServletResponse response, IStatus status, Object data) {
         try {
@@ -40,20 +28,19 @@ public class ResponseUtil {
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(200);
 
-            // FIXME: hutool 的 BUG：JSONUtil.toJsonStr()
-            //  将JSON转为String的时候，忽略null值的时候转成的String存在错误
-            response.getWriter()
-                    .write(JSONUtil.toJsonStr(new JSONObject(ApiResponse.ofStatus(status, data), false)));
+            // FIXME: BUG of hutool: JSONUtil.toJsonStr()
+            //  When converting JSON to String, there is an error in the converted String when ignoring the null value
+            response.getWriter().write(JSONUtil.toJsonStr(new JSONObject(ApiResponse.ofStatus(status, data), false)));
         } catch (IOException e) {
-            log.error("Response写出JSON异常，", e);
+            log.error("Response writes JSON exception，", e);
         }
     }
 
     /**
-     * 往 response 写出 json
+     * Write json to response
      *
-     * @param response  响应
-     * @param exception 异常
+     * @param response  Response
+     * @param exception Exception
      */
     public static void renderJson(HttpServletResponse response, BaseException exception) {
         try {
@@ -62,12 +49,11 @@ public class ResponseUtil {
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(200);
 
-            // FIXME: hutool 的 BUG：JSONUtil.toJsonStr()
-            //  将JSON转为String的时候，忽略null值的时候转成的String存在错误
-            response.getWriter()
-                    .write(JSONUtil.toJsonStr(new JSONObject(ApiResponse.ofException(exception), false)));
+            // FIXME: BUG of hutool: JSONUtil.toJsonStr()
+            //  When converting JSON to String, there is an error in the converted String when ignoring the null value
+            response.getWriter().write(JSONUtil.toJsonStr(new JSONObject(ApiResponse.ofException(exception), false)));
         } catch (IOException e) {
-            log.error("Response写出JSON异常，", e);
+            log.error("Response writes JSON exception，", e);
         }
     }
 }

@@ -1,39 +1,27 @@
 package vn.com.minhlq.boilerplate.utils;
 
-import cn.hutool.core.util.ObjectUtil;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import vn.com.minhlq.boilerplate.common.Consts;
+import vn.com.minhlq.boilerplate.constant.Consts;
 import vn.com.minhlq.boilerplate.dto.UserPrincipal;
 
-/**
- * <p>
- * Spring Security工具类
- * </p>
- *
- * @package: com.xkcoding.rbac.security.util
- * @description: Spring Security工具类
- * @author: yangkai.shen
- * @date: Created in 2018-12-12 18:30
- * @copyright: Copyright (c) 2018
- * @version: V1.0
- * @modified: yangkai.shen
- */
+
 public class SecurityUtil {
     /**
-     * 获取当前登录用户用户名
+     * Get the username of the currently logged in user
      *
-     * @return 当前登录用户用户名
+     * @return Username of currently logged in user
      */
     public static String getCurrentUsername() {
         UserPrincipal currentUser = getCurrentUser();
-        return ObjectUtil.isNull(currentUser) ? Consts.ANONYMOUS_NAME : currentUser.getUsername();
+        return ObjectUtils.isNotEmpty(currentUser) ? Consts.ANONYMOUS_NAME : currentUser.getUsername();
     }
 
     /**
-     * 获取当前登录用户信息
+     * Get current logged-in user information
      *
-     * @return 当前登录用户信息，匿名登录时，为null
+     * @return Current logged-in user information, null when logging in anonymously
      */
     public static UserPrincipal getCurrentUser() {
         Object userInfo = SecurityContextHolder.getContext()

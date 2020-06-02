@@ -16,21 +16,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import vn.com.minhlq.boilerplate.filter.JwtAuthenticationFilter;
 import vn.com.minhlq.boilerplate.services.CustomUserDetailsService;
 
-/**
- * <p>
- * Security 配置
- * </p>
- *
- * @package: com.xkcoding.rbac.security.config
- * @description: Security 配置
- * @author: yangkai.shen
- * @date: Created in 2018-12-07 16:46
- * @copyright: Copyright (c) 2018
- * @version: V1.0
- * @modified: yangkai.shen
- */
+
 @Configuration
 @EnableWebSecurity
 @EnableConfigurationProperties(CustomConfig.class)
@@ -52,8 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
     @Bean
+    @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
@@ -66,72 +55,72 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        // @formatter:off
+        // @formatter: off
         http.cors()
-                // 关闭 CSRF
+                // Close CSRF
                 .and().csrf().disable()
-                // 登录行为由自己实现，参考 AuthController#login
+                // The login behavior is implement by yourself, refer to AuthController#login
                 .formLogin().disable()
                 .httpBasic().disable()
 
-                // 认证请求
+                // Authentication request
                 .authorizeRequests()
-                // 所有请求都需要登录访问
+                // All requests require login to access
                 .anyRequest()
                 .authenticated()
-                // RBAC 动态 url 认证
+                // Dynamic url authentication
                 .anyRequest()
-                .access("@rbacAuthorityService.hasPermission(request,authentication)")
+                .access("@authorityService.hasPermission(request,authentication)")
 
-                // 登出行为由自己实现，参考 AuthController#logout
+                // The logout behavior is implemented by yourself, refer to AuthController#logout
                 .and().logout().disable()
-                // Session 管理
+                // Session management
                 .sessionManagement()
-                // 因为使用了JWT，所以这里不管理Session
+                // Because JWT is used, Session is not managed here
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-                // 异常处理
+                // Exception handling
                 .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
-        // @formatter:on
+        // @formatter: on
 
-        // 添加自定义 JWT 过滤器
+        // Add custom JWT filter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
-     * 放行所有不需要登录就可以访问的请求，参见 AuthController
-     * 也可以在 {@link #configure(HttpSecurity)} 中配置
+     * Allow all requests that can be accessed without logging in, see AuthController
+     * Can also be configured in {@link #configure(HttpSecurity)}
      * {@code http.authorizeRequests().antMatchers("/api/auth/**").permitAll()}
      */
     @Override
     public void configure(WebSecurity web) {
         WebSecurity and = web.ignoring().and();
 
-        // 忽略 GET
+        // Ignore GET
         customConfig.getIgnores().getGet().forEach(url -> and.ignoring().antMatchers(HttpMethod.GET, url));
 
-        // 忽略 POST
+        // Ignore POST
         customConfig.getIgnores().getPost().forEach(url -> and.ignoring().antMatchers(HttpMethod.POST, url));
 
-        // 忽略 DELETE
+        // Ignore DELETE
         customConfig.getIgnores().getDelete().forEach(url -> and.ignoring().antMatchers(HttpMethod.DELETE, url));
 
-        // 忽略 PUT
+        // Ignore PUT
         customConfig.getIgnores().getPut().forEach(url -> and.ignoring().antMatchers(HttpMethod.PUT, url));
 
-        // 忽略 HEAD
+        // Ignore HEAD
         customConfig.getIgnores().getHead().forEach(url -> and.ignoring().antMatchers(HttpMethod.HEAD, url));
 
-        // 忽略 PATCH
+        // Ignore PATCH
         customConfig.getIgnores().getPatch().forEach(url -> and.ignoring().antMatchers(HttpMethod.PATCH, url));
 
-        // 忽略 OPTIONS
+        // Ignore OPTIONS
         customConfig.getIgnores().getOptions().forEach(url -> and.ignoring().antMatchers(HttpMethod.OPTIONS, url));
 
-        // 忽略 TRACE
+        // Ignore TRACE
         customConfig.getIgnores().getTrace().forEach(url -> and.ignoring().antMatchers(HttpMethod.TRACE, url));
 
-        // 按照请求格式忽略
+        // Ignore as requested
         customConfig.getIgnores().getPattern().forEach(url -> and.ignoring().antMatchers(url));
 
     }

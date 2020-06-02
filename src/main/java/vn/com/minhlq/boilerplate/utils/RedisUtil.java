@@ -15,32 +15,20 @@ import vn.com.minhlq.boilerplate.common.PageResult;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * <p>
- * Redis工具类
- * </p>
- *
- * @package: com.xkcoding.rbac.security.util
- * @description: Redis工具类
- * @author: yangkai.shen
- * @date: Created in 2018-12-11 20:24
- * @copyright: Copyright (c) 2018
- * @version: V1.0
- * @modified: yangkai.shen
- */
-@Component
+
 @Slf4j
+@Component
 public class RedisUtil {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
     /**
-     * 分页获取指定格式key，使用 scan 命令代替 keys 命令，在大数据量的情况下可以提高查询效率
+     * Get the specified format key by page, and use the scan command instead of the keys command to improve the query efficiency in the case of a large amount of data
      *
-     * @param patternKey  key格式
-     * @param currentPage 当前页码
-     * @param pageSize    每页条数
-     * @return 分页获取指定格式key
+     * @param patternKey  key format
+     * @param currentPage Current page number
+     * @param pageSize    Articles per page
+     * @return Get the specified format key by page
      */
     public PageResult<String> findKeysForPage(String patternKey, int currentPage, int pageSize) {
         ScanOptions options = ScanOptions.scanOptions()
@@ -74,18 +62,18 @@ public class RedisUtil {
     }
 
     /**
-     * 删除 Redis 中的某个key
+     * Delete a key in Redis
      *
-     * @param key 键
+     * @param key Key
      */
     public void delete(String key) {
         stringRedisTemplate.delete(key);
     }
 
     /**
-     * 批量删除 Redis 中的某些key
+     * Batch delete some keys in Redis
      *
-     * @param keys 键列表
+     * @param keys Key list
      */
     public void delete(Collection<String> keys) {
         stringRedisTemplate.delete(keys);

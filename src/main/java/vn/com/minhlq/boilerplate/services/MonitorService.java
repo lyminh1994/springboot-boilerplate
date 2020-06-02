@@ -5,11 +5,11 @@ import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import vn.com.minhlq.boilerplate.common.Consts;
+import vn.com.minhlq.boilerplate.constant.Consts;
 import vn.com.minhlq.boilerplate.common.PageResult;
 import vn.com.minhlq.boilerplate.dto.OnlineUser;
 import vn.com.minhlq.boilerplate.model.User;
-import vn.com.minhlq.boilerplate.payload.PageCondition;
+import vn.com.minhlq.boilerplate.common.PageCondition;
 import vn.com.minhlq.boilerplate.repositories.UserRepository;
 import vn.com.minhlq.boilerplate.utils.RedisUtil;
 import vn.com.minhlq.boilerplate.utils.SecurityUtil;
@@ -17,19 +17,7 @@ import vn.com.minhlq.boilerplate.utils.SecurityUtil;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * <p>
- * 监控 Service
- * </p>
- *
- * @package: com.xkcoding.rbac.security.service
- * @description: 监控 Service
- * @author: yangkai.shen
- * @date: Created in 2018-12-12 00:55
- * @copyright: Copyright (c) 2018
- * @version: V1.0
- * @modified: yangkai.shen
- */
+
 @Slf4j
 @Service
 public class MonitorService {
@@ -40,24 +28,24 @@ public class MonitorService {
     private UserRepository userRepository;
 
     /**
-     * 在线用户分页列表
+     * Online user pagination list
      *
-     * @param pageCondition 分页参数
-     * @return 在线用户分页列表
+     * @param pageCondition Paging parameters
+     * @return Online user pagination list
      */
     public PageResult<OnlineUser> onlineUser(PageCondition pageCondition) {
         PageResult<String> keys = redisUtil.findKeysForPage(Consts.REDIS_JWT_KEY_PREFIX + Consts.SYMBOL_STAR, pageCondition.getCurrentPage(), pageCondition.getPageSize());
         List<String> rows = keys.getRows();
         Long total = keys.getTotal();
 
-        // 根据 redis 中键获取用户名列表
+        // Get a list of usernames based on the redis middle key
         List<String> usernameList = rows.stream()
                 .map(s -> StrUtil.subAfter(s, Consts.REDIS_JWT_KEY_PREFIX, true))
                 .collect(Collectors.toList());
-        // 根据用户名查询用户信息
+        // Query user information based on Username
         List<User> userList = userRepository.findByUsernameIn(usernameList);
 
-        // 封装在线用户信息
+        // Encapsulate online user information
         List<OnlineUser> onlineUserList = Lists.newArrayList();
         userList.forEach(user -> onlineUserList.add(OnlineUser.create(user)));
 
@@ -65,25 +53,25 @@ public class MonitorService {
     }
 
     /**
-     * 踢出在线用户
+     * Kick out online users
      *
-     * @param names 用户名列表
+     * @param names User name list
      */
-    public void kickout(List<String> names) {
-        // 清除 Redis 中的 JWT 信息
+    public void kickOut(List<String> names) {
+        // Clear JWT information in Redis
         List<String> redisKeys = names.parallelStream()
                 .map(s -> Consts.REDIS_JWT_KEY_PREFIX + s)
                 .collect(Collectors.toList());
         redisUtil.delete(redisKeys);
 
-        // 获取当前用户名
+        // Get current username
         String currentUsername = SecurityUtil.getCurrentUsername();
         names.parallelStream()
                 .forEach(name -> {
-                    // TODO: 通知被踢出的用户已被当前登录用户踢出，
-                    //  后期考虑使用 websocket 实现，具体伪代码实现如下。
-                    //  String message = "您已被用户【" + currentUsername + "】手动下线！";
-                    log.debug("用户【{}】被用户【{}】手动下线！", name, currentUsername);
+                    // TODO: Notify that the kicked out user has been kicked out by the currently logged in user,
+                    // Later consider using websocket to achieve, the specific pseudo code implementation is as follows.
+                    // String message = "You have been manually logged off by the user [" + currentUsername + "]!";
+                    log.debug("User [{}] was manually offline by user [{}]!", name, currentUsername);
                 });
     }
 }

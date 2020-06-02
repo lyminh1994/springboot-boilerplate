@@ -16,19 +16,7 @@ import vn.com.minhlq.boilerplate.repositories.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * <p>
- * 自定义UserDetails查询
- * </p>
- *
- * @package: com.xkcoding.rbac.security.service
- * @description: 自定义UserDetails查询
- * @author: yangkai.shen
- * @date: Created in 2018-12-10 10:29
- * @copyright: Copyright (c) 2018
- * @version: V1.0
- * @modified: yangkai.shen
- */
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
@@ -43,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmailOrPhone) throws UsernameNotFoundException {
         User user = userRepository.findByUsernameOrEmailOrPhone(usernameOrEmailOrPhone, usernameOrEmailOrPhone, usernameOrEmailOrPhone)
-                .orElseThrow(() -> new UsernameNotFoundException("未找到用户信息 : " + usernameOrEmailOrPhone));
+                .orElseThrow(() -> new UsernameNotFoundException("User information not found: " + usernameOrEmailOrPhone));
         List<Role> roles = roleRepository.selectByUserId(user.getId());
         List<Long> roleIds = roles.stream()
                 .map(Role::getId)

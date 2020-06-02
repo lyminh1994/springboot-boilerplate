@@ -3,23 +3,11 @@ package vn.com.minhlq.boilerplate.exception;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import vn.com.minhlq.boilerplate.common.BaseException;
-import vn.com.minhlq.boilerplate.common.Status;
+import vn.com.minhlq.boilerplate.constant.Status;
 
-/**
- * <p>
- * 全局异常
- * </p>
- *
- * @package: com.xkcoding.rbac.security.exception
- * @description: 全局异常
- * @author: yangkai.shen
- * @date: Created in 2018-12-10 17:24
- * @copyright: Copyright (c) 2018
- * @version: V1.0
- * @modified: yangkai.shen
- */
-@EqualsAndHashCode(callSuper = true)
+
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class SecurityException extends BaseException {
     public SecurityException(Status status) {
         super(status);

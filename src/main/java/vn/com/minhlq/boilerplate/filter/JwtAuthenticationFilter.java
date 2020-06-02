@@ -1,12 +1,13 @@
-package vn.com.minhlq.boilerplate.config;
+package vn.com.minhlq.boilerplate.filter;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,8 +15,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import vn.com.minhlq.boilerplate.common.BaseException;
-import vn.com.minhlq.boilerplate.common.Status;
+import vn.com.minhlq.boilerplate.constant.Status;
+import vn.com.minhlq.boilerplate.config.CustomConfig;
+import vn.com.minhlq.boilerplate.exception.SecurityException;
 import vn.com.minhlq.boilerplate.services.CustomUserDetailsService;
 import vn.com.minhlq.boilerplate.utils.JwtUtil;
 import vn.com.minhlq.boilerplate.utils.ResponseUtil;
@@ -27,21 +29,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 
-/**
- * <p>
- * Jwt 认证过滤器
- * </p>
- *
- * @package: com.xkcoding.rbac.security.config
- * @description: Jwt 认证过滤器
- * @author: yangkai.shen
- * @date: Created in 2018-12-10 15:15
- * @copyright: Copyright (c) 2018
- * @version: V1.0
- * @modified: yangkai.shen
- */
-@Component
+
 @Slf4j
+@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
@@ -53,8 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private CustomConfig customConfig;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         if (checkIgnores(request)) {
             filterChain.doFilter(request, response);
             return;
@@ -62,7 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String jwt = jwtUtil.getJwtFromRequest(request);
 
-        if (StrUtil.isNotBlank(jwt)) {
+        if (StringUtils.isNotBlank(jwt)) {
             try {
                 String username = jwtUtil.getUsernameFromJWT(jwt);
 
@@ -70,10 +59,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                SecurityContextHolder.getContext()
-                        .setAuthentication(authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
                 filterChain.doFilter(request, response);
-            } catch (BaseException e) {
+            } catch (SecurityException e) {
                 ResponseUtil.renderJson(response, e);
             }
         } else {
@@ -82,17 +70,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     }
 
-    /**
-     * 请求是否不需要进行权限拦截
-     *
-     * @param request 当前请求
-     * @return true - 忽略，false - 不忽略
-     */
     private boolean checkIgnores(HttpServletRequest request) {
         String method = request.getMethod();
 
         HttpMethod httpMethod = HttpMethod.resolve(method);
-        if (ObjectUtil.isNull(httpMethod)) {
+        if (ObjectUtils.isEmpty(httpMethod)) {
             httpMethod = HttpMethod.GET;
         }
 
@@ -100,45 +82,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         switch (httpMethod) {
             case GET:
-                ignores.addAll(customConfig.getIgnores()
-                        .getGet());
+                ignores.addAll(customConfig.getIgnores().getGet());
                 break;
             case PUT:
-                ignores.addAll(customConfig.getIgnores()
-                        .getPut());
+                ignores.addAll(customConfig.getIgnores().getPut());
                 break;
             case HEAD:
-                ignores.addAll(customConfig.getIgnores()
-                        .getHead());
+                ignores.addAll(customConfig.getIgnores().getHead());
                 break;
             case POST:
-                ignores.addAll(customConfig.getIgnores()
-                        .getPost());
+                ignores.addAll(customConfig.getIgnores().getPost());
                 break;
             case PATCH:
-                ignores.addAll(customConfig.getIgnores()
-                        .getPatch());
+                ignores.addAll(customConfig.getIgnores().getPatch());
                 break;
             case TRACE:
-                ignores.addAll(customConfig.getIgnores()
-                        .getTrace());
+                ignores.addAll(customConfig.getIgnores().getTrace());
                 break;
             case DELETE:
-                ignores.addAll(customConfig.getIgnores()
-                        .getDelete());
+                ignores.addAll(customConfig.getIgnores().getDelete());
                 break;
             case OPTIONS:
-                ignores.addAll(customConfig.getIgnores()
-                        .getOptions());
+                ignores.addAll(customConfig.getIgnores().getOptions());
                 break;
             default:
                 break;
         }
 
-        ignores.addAll(customConfig.getIgnores()
-                .getPattern());
+        ignores.addAll(customConfig.getIgnores().getPattern());
 
-        if (CollUtil.isNotEmpty(ignores)) {
+        if (CollectionUtils.isNotEmpty(ignores)) {
             for (String ignore : ignores) {
                 AntPathRequestMatcher matcher = new AntPathRequestMatcher(ignore, method);
                 if (matcher.matches(request)) {
