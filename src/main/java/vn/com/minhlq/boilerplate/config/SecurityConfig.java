@@ -1,6 +1,5 @@
 package vn.com.minhlq.boilerplate.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -16,14 +15,26 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import vn.com.minhlq.boilerplate.filter.JwtAuthenticationFilter;
 import vn.com.minhlq.boilerplate.services.CustomUserDetailsService;
 
-
+/**
+ * <p>
+ * Security Configuration
+ * </p>
+ *
+ * @package: vn.com.minhlq.boilerplate.config
+ * @description:
+ * @author: MinhLQ
+ * @date: Created in 2020-06-04 14:15
+ * @copyright: Copyright (c) 2020
+ * @version: v1.0
+ * @modified: MinhLQ
+ */
 @Configuration
 @EnableWebSecurity
 @EnableConfigurationProperties(CustomConfig.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private CustomConfig customConfig;
 
@@ -55,41 +66,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        // @formatter: off
+        // @formatter:off
         http.cors()
-                // Close CSRF
-                .and().csrf().disable()
-                // The login behavior is implement by yourself, refer to AuthController#login
-                .formLogin().disable()
-                .httpBasic().disable()
+            // Close CSRF
+            .and().csrf().disable()
+            // The login behavior is implemented by yourself, refer to AuthController#login
+            .formLogin().disable()
+            .httpBasic().disable()
 
-                // Authentication request
-                .authorizeRequests()
-                // All requests require login to access
-                .anyRequest()
-                .authenticated()
-                // Dynamic url authentication
-                .anyRequest()
-                .access("@authorityService.hasPermission(request,authentication)")
+            // Authentication request
+            .authorizeRequests()
+            // All requests require login access
+            .anyRequest()
+            .authenticated()
 
-                // The logout behavior is implemented by yourself, refer to AuthController#logout
-                .and().logout().disable()
-                // Session management
-                .sessionManagement()
-                // Because JWT is used, Session is not managed here
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            // RBAC dynamic url authentication
+            // .anyRequest()
+            // .access("@authorityService.hasPermission(request,authentication)")
 
-                // Exception handling
-                .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
-        // @formatter: on
+            // The logout behavior is implemented by yourself, refer to AuthController#logout
+            .and().logout().disable()
+            // Session management
+            .sessionManagement()
+            // Because JWT is used, Session is not managed here
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+            // Exception handling
+            .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+        // @formatter:on
 
         // Add custom JWT filter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
-     * Allow all requests that can be accessed without logging in, see AuthController
-     * Can also be configured in {@link #configure(HttpSecurity)}
+     * Allow all requests that can be accessed without login, see AuthController
+     * Can also be {@link #configure(HttpSecurity)} Configuration
      * {@code http.authorizeRequests().antMatchers("/api/auth/**").permitAll()}
      */
     @Override
@@ -120,7 +132,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Ignore TRACE
         customConfig.getIgnores().getTrace().forEach(url -> and.ignoring().antMatchers(HttpMethod.TRACE, url));
 
-        // Ignore as requested
+        // Ignore requested
         customConfig.getIgnores().getPattern().forEach(url -> and.ignoring().antMatchers(url));
 
     }

@@ -13,21 +13,26 @@ import javax.persistence.Table;
  * </p>
  *
  * @package: vn.com.minhlq.boilerplate.model
- * @description: Entity Permission
+ * @description:
  * @author: MinhLQ
  * @date: Created in 2020-06-01 21:00
  * @copyright: Copyright (c) 2020
- * @version: V1.0
+ * @version: v1.0
  * @modified: MinhLQ
  */
-
 @Data
 @Entity
-@Table(name = "permission")
+@Table(name = "sec_permission")
 public class Permission {
+    /**
+     * Primary key
+     */
     @Id
     private Long id;
 
+    /**
+     * Permission name
+     */
     private String name;
 
     /**
@@ -36,7 +41,7 @@ public class Permission {
     private String url;
 
     /**
-     * Permission type 1 - Page, 2 - Button
+     * Permission type, page-1, button-2
      */
     private Integer type;
 
@@ -56,7 +61,7 @@ public class Permission {
     private Integer sort;
 
     /**
-     * Parent Id
+     * Parent id
      */
     @Column(name = "parent_id")
     private Long parentId;

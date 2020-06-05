@@ -18,10 +18,9 @@ import java.util.Optional;
  * @author: MinhLQ
  * @date: Created in 2020-06-01 21:00
  * @copyright: Copyright (c) 2020
- * @version: V1.0
+ * @version: v1.0
  * @modified: MinhLQ
  */
-
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
     /**

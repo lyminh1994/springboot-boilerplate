@@ -14,14 +14,13 @@ import java.util.List;
  * </p>
  *
  * @package: vn.com.minhlq.boilerplate.repositories
- * @description: Permission Repository
+ * @description:
  * @author: MinhLQ
  * @date: Created in 2020-06-01 21:00
  * @copyright: Copyright (c) 2020
- * @version: V1.0
+ * @version: v1.0
  * @modified: MinhLQ
  */
-
 public interface PermissionRepository extends JpaRepository<Permission, Long>, JpaSpecificationExecutor<Permission> {
 
     /**
@@ -30,6 +29,6 @@ public interface PermissionRepository extends JpaRepository<Permission, Long>, J
      * @param ids List Role Id
      * @return List<Permission>
      */
-    @Query(value = "SELECT DISTINCT permission.* FROM permission, role, role_permissions WHERE role.id = role_permissions.role_id AND permission.id = role_permissions.permission_id AND role.id IN (:ids)", nativeQuery = true)
+    @Query(value = "SELECT DISTINCT sec_permission.* FROM sec_permission,sec_role,sec_role_permission WHERE sec_role.id = sec_role_permission.role_id AND sec_permission.id = sec_role_permission.permission_id AND sec_role.id IN (:ids)", nativeQuery = true)
     List<Permission> selectByRoleIdList(@Param("ids") List<Long> ids);
 }

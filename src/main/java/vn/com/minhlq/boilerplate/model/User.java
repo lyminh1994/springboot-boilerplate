@@ -2,6 +2,7 @@ package vn.com.minhlq.boilerplate.model;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -12,45 +13,73 @@ import javax.persistence.Table;
  * </p>
  *
  * @package: vn.com.minhlq.boilerplate.model
- * @description: Entity User
+ * @description:
  * @author: MinhLQ
  * @date: Created in 2020-06-01 21:00
  * @copyright: Copyright (c) 2020
- * @version: V1.0
+ * @version: v1.0
  * @modified: MinhLQ
  */
-
 @Data
 @Entity
-@Table(name = "user")
+@Table(name = "sec_user")
 public class User {
 
+    /**
+     * Primary key
+     */
     @Id
     private Long id;
 
+    /**
+     * Username
+     */
     private String username;
 
+    /**
+     * Password
+     */
     private String password;
 
+    /**
+     * Nickname
+     */
     private String nickname;
 
+    /**
+     * Phone number
+     */
     private String phone;
 
+    /**
+     * Email
+     */
     private String email;
 
+    /**
+     * Birthday
+     */
     private Long birthday;
 
     /**
-     * Sex 1 - Male, 0 - Female
+     * Gender, male-1, female-2
      */
     private Integer sex;
 
     /**
-     * Status 1 - Enable, 0 - Disable
+     * Status, enable-1, disable-0
      */
     private Integer status;
 
+    /**
+     * Creation time
+     */
+    @Column(name = "create_time")
     private Long createTime;
 
+    /**
+     * Update time
+     */
+    @Column(name = "update_time")
     private Long updateTime;
 }

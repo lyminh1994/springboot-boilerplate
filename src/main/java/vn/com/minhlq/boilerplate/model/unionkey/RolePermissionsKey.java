@@ -8,26 +8,31 @@ import java.io.Serializable;
 
 /**
  * <p>
- * Role Permissions Key
+ * Role-Permission combined primary key
  * </p>
  *
- * @package: vn.com.minhlq.boilerplate.model.unionkey
- * @description: Union key of table Role Permissions
+ * @package: vn.com.minhlq.boilerplate.model
+ * @description:
  * @author: MinhLQ
  * @date: Created in 2020-06-01 21:00
  * @copyright: Copyright (c) 2020
- * @version: V1.0
+ * @version: v1.0
  * @modified: MinhLQ
  */
-
 @Data
 @Embeddable
 public class RolePermissionsKey implements Serializable {
-    private static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 6850974328279713855L;
 
+    /**
+     * Role id
+     */
     @Column(name = "role_id")
     private Long roleId;
 
+    /**
+     * Permission id
+     */
     @Column(name = "permission_id")
     private Long permissionId;
 }

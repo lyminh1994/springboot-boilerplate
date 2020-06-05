@@ -9,23 +9,24 @@ import javax.persistence.Table;
 
 /**
  * <p>
- * User Roles
+ * User role association
  * </p>
  *
  * @package: vn.com.minhlq.boilerplate.model
- * @description: Entity User Roles
+ * @description:
  * @author: MinhLQ
  * @date: Created in 2020-06-01 21:00
  * @copyright: Copyright (c) 2020
- * @version: V1.0
+ * @version: v1.0
  * @modified: MinhLQ
  */
-
 @Data
 @Entity
-@Table(name = "user_roles")
+@Table(name = "sec_user_role")
 public class UserRoles {
-
+    /**
+     * Primary key
+     */
     @EmbeddedId
     private UserRolesKey id;
 }

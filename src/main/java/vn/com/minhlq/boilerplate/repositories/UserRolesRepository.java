@@ -16,10 +16,9 @@ import vn.com.minhlq.boilerplate.model.unionkey.UserRolesKey;
  * @author: MinhLQ
  * @date: Created in 2020-06-01 21:00
  * @copyright: Copyright (c) 2020
- * @version: V1.0
+ * @version: v1.0
  * @modified: MinhLQ
  */
-
 public interface UserRolesRepository extends JpaRepository<UserRoles, UserRolesKey>, JpaSpecificationExecutor<UserRoles> {
 
 }

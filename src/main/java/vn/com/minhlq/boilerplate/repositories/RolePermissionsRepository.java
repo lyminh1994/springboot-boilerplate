@@ -15,9 +15,8 @@ import vn.com.minhlq.boilerplate.model.unionkey.RolePermissionsKey;
  * @author: MinhLQ
  * @date: Created in 2020-06-01 21:00
  * @copyright: Copyright (c) 2020
- * @version: V1.0
+ * @version: v1.0
  * @modified: MinhLQ
  */
-
 public interface RolePermissionsRepository extends JpaRepository<RolePermissions, RolePermissionsKey>, JpaSpecificationExecutor<RolePermissions> {
 }
