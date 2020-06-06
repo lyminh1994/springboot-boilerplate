@@ -1,12 +1,13 @@
 package vn.com.minhlq.boilerplate.common;
 
 import lombok.Data;
+import vn.com.minhlq.boilerplate.exception.BaseException;
 
 import java.io.Serializable;
 
 /**
  * <p>
- * Common API interface package
+ * Common API response
  * </p>
  *
  * @package: vn.com.minhlq.boilerplate.common

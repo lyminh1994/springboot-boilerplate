@@ -1,9 +1,9 @@
 package vn.com.minhlq.boilerplate.util;
 
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.data.domain.PageRequest;
-import vn.com.minhlq.boilerplate.common.Consts;
+import vn.com.minhlq.boilerplate.common.CommonConst;
 import vn.com.minhlq.boilerplate.payload.PageCondition;
 
 /**
@@ -28,15 +28,15 @@ public class PageUtil {
      * @param <T>       {@link PageCondition}
      */
     public static <T extends PageCondition> void checkPageCondition(T condition, Class<T> clazz) {
-        if (ObjectUtil.isNull(condition)) {
+        if (ObjectUtils.isEmpty(condition)) {
             condition = ReflectUtil.newInstance(clazz);
         }
         // Verify paging parameters
-        if (ObjectUtil.isNull(condition.getCurrentPage())) {
-            condition.setCurrentPage(Consts.DEFAULT_CURRENT_PAGE);
+        if (ObjectUtils.isEmpty(condition.getCurrentPage())) {
+            condition.setCurrentPage(CommonConst.DEFAULT_CURRENT_PAGE);
         }
-        if (ObjectUtil.isNull(condition.getPageSize())) {
-            condition.setPageSize(Consts.DEFAULT_PAGE_SIZE);
+        if (ObjectUtils.isEmpty(condition.getPageSize())) {
+            condition.setPageSize(CommonConst.DEFAULT_PAGE_SIZE);
         }
     }
 

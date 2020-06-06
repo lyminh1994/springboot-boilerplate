@@ -22,7 +22,7 @@ import javax.persistence.Table;
  */
 @Data
 @Entity
-@Table(name = "sec_permission")
+@Table(name = "permission")
 public class Permission {
     /**
      * Primary key

@@ -1,17 +1,18 @@
-package vn.com.minhlq.boilerplate.vo;
+package vn.com.minhlq.boilerplate.dto;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.Data;
-import vn.com.minhlq.boilerplate.common.Consts;
+import org.apache.commons.lang3.StringUtils;
+import vn.com.minhlq.boilerplate.common.CommonConst;
 import vn.com.minhlq.boilerplate.model.User;
+import vn.com.minhlq.boilerplate.util.StringUtil;
 
 /**
  * <p>
- * 在线用户 VO
+ * Online users dto
  * </p>
  *
- * @package:
+ * @package: vn.com.minhlq.boilerplate.dto
  * @description:
  * @author: MinhLQ
  * @date: Created in 2020-06-04 14:15
@@ -23,46 +24,46 @@ import vn.com.minhlq.boilerplate.model.User;
 public class OnlineUser {
 
     /**
-     * 主键
+     * Primary key
      */
     private Long id;
 
     /**
-     * 用户名
+     * Username
      */
     private String username;
 
     /**
-     * 昵称
+     * Nick name
      */
     private String nickname;
 
     /**
-     * 手机
+     * Phone numbers
      */
     private String phone;
 
     /**
-     * 邮箱
+     * Email
      */
     private String email;
 
     /**
-     * 生日
+     * Birthday
      */
     private Long birthday;
 
     /**
-     * 性别，男-1，女-2
+     * Gender, male-1, female-2
      */
     private Integer sex;
 
     public static OnlineUser create(User user) {
         OnlineUser onlineUser = new OnlineUser();
         BeanUtil.copyProperties(user, onlineUser);
-        // 脱敏
-        onlineUser.setPhone(StrUtil.hide(user.getPhone(), 3, 7));
-        onlineUser.setEmail(StrUtil.hide(user.getEmail(), 1, StrUtil.indexOfIgnoreCase(user.getEmail(), Consts.SYMBOL_EMAIL)));
+        // Desensitization
+        onlineUser.setPhone(StringUtil.hide(user.getPhone(), 3, 7));
+        onlineUser.setEmail(StringUtil.hide(user.getEmail(), 1, StringUtils.indexOfIgnoreCase(user.getEmail(), CommonConst.SYMBOL_EMAIL)));
         return onlineUser;
     }
 }

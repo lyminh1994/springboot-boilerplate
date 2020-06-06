@@ -1,10 +1,10 @@
 package vn.com.minhlq.boilerplate.util;
 
-import cn.hutool.core.util.ObjectUtil;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import vn.com.minhlq.boilerplate.common.Consts;
-import vn.com.minhlq.boilerplate.vo.UserPrincipal;
+import org.springframework.util.ObjectUtils;
+import vn.com.minhlq.boilerplate.common.CommonConst;
+import vn.com.minhlq.boilerplate.dto.UserPrincipal;
 
 
 /**
@@ -33,7 +33,7 @@ public final class SecurityUtil {
      */
     public static String getCurrentUsername() {
         UserPrincipal currentUser = getCurrentUser();
-        return ObjectUtil.isNull(currentUser) ? Consts.ANONYMOUS_NAME : currentUser.getUsername();
+        return ObjectUtils.isEmpty(currentUser) ? CommonConst.ANONYMOUS_NAME : currentUser.getUsername();
     }
 
     /**

@@ -15,7 +15,7 @@ import vn.com.minhlq.boilerplate.common.Status;
 import vn.com.minhlq.boilerplate.exception.SecurityException;
 import vn.com.minhlq.boilerplate.payload.LoginRequest;
 import vn.com.minhlq.boilerplate.util.JwtUtil;
-import vn.com.minhlq.boilerplate.vo.JwtResponse;
+import vn.com.minhlq.boilerplate.dto.JwtResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -51,8 +51,7 @@ public class AuthController {
     public ApiResponse login(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsernameOrEmailOrPhone(), loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext()
-            .setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = jwtUtil.createJWT(authentication, loginRequest.getRememberMe());
         return ApiResponse.ofSuccess(new JwtResponse(jwt));

@@ -2,6 +2,7 @@ package vn.com.minhlq.boilerplate.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * <p>
@@ -17,6 +18,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @modified: MinhLQ
  */
 @Data
+@PropertySource("classpath:custom.properties")
 @ConfigurationProperties(prefix = "custom.config")
 public class CustomConfig {
     /**

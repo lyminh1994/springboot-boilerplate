@@ -29,7 +29,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
      * @param username UserName
      * @param email    Email
      * @param phone    Phone numbers
-     * @return Optional<User>
+     * @return Optional user
      */
     Optional<User> findByUsernameOrEmailOrPhone(String username, String email, String phone);
 
@@ -37,7 +37,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
      * Query user list according to user name list
      *
      * @param usernameList UserName List
-     * @return List<User>
+     * @return List user
      */
     List<User> findByUsernameIn(List<String> usernameList);
 

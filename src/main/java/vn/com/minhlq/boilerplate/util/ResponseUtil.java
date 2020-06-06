@@ -4,7 +4,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import vn.com.minhlq.boilerplate.common.ApiResponse;
-import vn.com.minhlq.boilerplate.common.BaseException;
+import vn.com.minhlq.boilerplate.exception.BaseException;
 import vn.com.minhlq.boilerplate.common.IStatus;
 
 import javax.servlet.http.HttpServletResponse;

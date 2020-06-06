@@ -1,7 +1,6 @@
 package vn.com.minhlq.boilerplate.util;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +9,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import vn.com.minhlq.boilerplate.common.Consts;
+import vn.com.minhlq.boilerplate.common.CommonConst;
 import vn.com.minhlq.boilerplate.common.Status;
 import vn.com.minhlq.boilerplate.config.JwtConfig;
+import vn.com.minhlq.boilerplate.dto.UserPrincipal;
 import vn.com.minhlq.boilerplate.exception.SecurityException;
-import vn.com.minhlq.boilerplate.vo.UserPrincipal;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
@@ -76,7 +75,7 @@ public class JwtUtil {
         String jwt = builder.compact();
         // Save the generated JWT to Redis
         stringRedisTemplate.opsForValue()
-                .set(Consts.REDIS_JWT_KEY_PREFIX + subject, jwt, ttl, TimeUnit.MILLISECONDS);
+                .set(CommonConst.REDIS_JWT_KEY_PREFIX + subject, jwt, ttl, TimeUnit.MILLISECONDS);
         return jwt;
     }
 
@@ -106,7 +105,7 @@ public class JwtUtil {
                     .getBody();
 
             String username = claims.getSubject();
-            String redisKey = Consts.REDIS_JWT_KEY_PREFIX + username;
+            String redisKey = CommonConst.REDIS_JWT_KEY_PREFIX + username;
 
             // Verify the existence of JWT in Redis
             Long expire = stringRedisTemplate.getExpire(redisKey, TimeUnit.MILLISECONDS);
@@ -118,7 +117,7 @@ public class JwtUtil {
             // If it is inconsistent, it means that the user has logged out/the user is logged in on a different device, which means that the JWT has expired
             String redisToken = stringRedisTemplate.opsForValue()
                     .get(redisKey);
-            if (!StrUtil.equals(jwt, redisToken)) {
+            if (!StringUtil.equals(jwt, redisToken)) {
                 throw new SecurityException(Status.TOKEN_OUT_OF_CTRL);
             }
             return claims;
@@ -149,7 +148,7 @@ public class JwtUtil {
         String jwt = getJwtFromRequest(request);
         String username = getUsernameFromJWT(jwt);
         // Clear JWT from Redis
-        stringRedisTemplate.delete(Consts.REDIS_JWT_KEY_PREFIX + username);
+        stringRedisTemplate.delete(CommonConst.REDIS_JWT_KEY_PREFIX + username);
     }
 
     /**
@@ -171,7 +170,7 @@ public class JwtUtil {
      */
     public String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if (StrUtil.isNotBlank(bearerToken) && bearerToken.startsWith("Bearer ")) {
+        if (StringUtil.isNotBlank(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
         return null;

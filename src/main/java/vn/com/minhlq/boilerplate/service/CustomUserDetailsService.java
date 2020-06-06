@@ -1,4 +1,4 @@
-package vn.com.minhlq.boilerplate.services;
+package vn.com.minhlq.boilerplate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +11,7 @@ import vn.com.minhlq.boilerplate.model.User;
 import vn.com.minhlq.boilerplate.repositories.PermissionRepository;
 import vn.com.minhlq.boilerplate.repositories.RoleRepository;
 import vn.com.minhlq.boilerplate.repositories.UserRepository;
-import vn.com.minhlq.boilerplate.vo.UserPrincipal;
+import vn.com.minhlq.boilerplate.dto.UserPrincipal;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,13 +42,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     private PermissionRepository permissionRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String usernameOrEmailOrPhone) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String usernameOrEmailOrPhone) {
         User user = userRepository.findByUsernameOrEmailOrPhone(usernameOrEmailOrPhone, usernameOrEmailOrPhone, usernameOrEmailOrPhone)
-                .orElseThrow(() -> new UsernameNotFoundException("User information not found : " + usernameOrEmailOrPhone));
+            .orElseThrow(() -> new UsernameNotFoundException("User information not found : " + usernameOrEmailOrPhone));
         List<Role> roles = roleRepository.selectByUserId(user.getId());
-        List<Long> roleIds = roles.stream()
-                .map(Role::getId)
-                .collect(Collectors.toList());
+        List<Long> roleIds = roles.stream().map(Role::getId).collect(Collectors.toList());
         List<Permission> permissions = permissionRepository.selectByRoleIdList(roleIds);
         return UserPrincipal.create(user, roles, permissions);
     }

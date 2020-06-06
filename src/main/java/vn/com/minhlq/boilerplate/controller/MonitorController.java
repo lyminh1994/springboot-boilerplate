@@ -1,18 +1,18 @@
 package vn.com.minhlq.boilerplate.controller;
 
-import cn.hutool.core.collection.CollUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import vn.com.minhlq.boilerplate.common.ApiResponse;
 import vn.com.minhlq.boilerplate.common.PageResult;
 import vn.com.minhlq.boilerplate.common.Status;
+import vn.com.minhlq.boilerplate.dto.OnlineUser;
 import vn.com.minhlq.boilerplate.exception.SecurityException;
 import vn.com.minhlq.boilerplate.payload.PageCondition;
-import vn.com.minhlq.boilerplate.services.MonitorService;
+import vn.com.minhlq.boilerplate.service.MonitorService;
 import vn.com.minhlq.boilerplate.util.PageUtil;
 import vn.com.minhlq.boilerplate.util.SecurityUtil;
-import vn.com.minhlq.boilerplate.vo.OnlineUser;
 
 import java.util.List;
 
@@ -56,11 +56,11 @@ public class MonitorController {
      */
     @DeleteMapping("/online/user/kick-out")
     public ApiResponse kickOutOnlineUser(@RequestBody List<String> names) {
-        if (CollUtil.isEmpty(names)) {
+        if (CollectionUtils.isEmpty(names)) {
             throw new SecurityException(Status.PARAM_NOT_NULL);
         }
         if (names.contains(SecurityUtil.getCurrentUsername())) {
-            throw new SecurityException(Status.KICKOUT_SELF);
+            throw new SecurityException(Status.KICK_OUT_SELF);
         }
         monitorService.kickOut(names);
         return ApiResponse.ofSuccess();

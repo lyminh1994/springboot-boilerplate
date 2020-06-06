@@ -24,11 +24,11 @@ import java.util.List;
 public interface PermissionRepository extends JpaRepository<Permission, Long>, JpaSpecificationExecutor<Permission> {
 
     /**
-     * Query permission list based on role id list
+     * Query permission list based on list role id
      *
      * @param ids List Role Id
-     * @return List<Permission>
+     * @return List permission
      */
-    @Query(value = "SELECT DISTINCT sec_permission.* FROM sec_permission,sec_role,sec_role_permission WHERE sec_role.id = sec_role_permission.role_id AND sec_permission.id = sec_role_permission.permission_id AND sec_role.id IN (:ids)", nativeQuery = true)
+    @Query(value = "SELECT DISTINCT permission.* FROM permission, role, role_permissions WHERE role.id = role_permissions.role_id AND permission.id = role_permissions.permission_id AND role.id IN (:ids)", nativeQuery = true)
     List<Permission> selectByRoleIdList(@Param("ids") List<Long> ids);
 }

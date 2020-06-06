@@ -15,7 +15,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import vn.com.minhlq.boilerplate.services.CustomUserDetailsService;
+import vn.com.minhlq.boilerplate.filters.JwtAuthenticationFilter;
+import vn.com.minhlq.boilerplate.service.CustomUserDetailsService;
 
 /**
  * <p>
@@ -65,7 +66,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         // @formatter:off
         http.cors()
             // Close CSRF
@@ -76,13 +76,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             // Authentication request
             .authorizeRequests()
+
             // All requests require login access
-            .anyRequest()
+            // .anyRequest() used in this then system will throws an exception such as: Can't configure anyRequest after itself
+            .antMatchers()
             .authenticated()
 
-            // RBAC dynamic url authentication
-            // .anyRequest()
-            // .access("@authorityService.hasPermission(request,authentication)")
+            // Role Base Access Control dynamic url authentication
+            .anyRequest()
+            .access("@authorityService.hasPermission(request,authentication)")
 
             // The logout behavior is implemented by yourself, refer to AuthController#logout
             .and().logout().disable()

@@ -26,8 +26,8 @@ public interface RoleRepository extends JpaRepository<Role, Long>, JpaSpecificat
      * Query role list based on user id
      *
      * @param userId User Id
-     * @return List<Role>
+     * @return List role
      */
-    @Query(value = "SELECT sec_role.* FROM sec_role,sec_user,sec_user_role WHERE sec_user.id = sec_user_role.user_id AND sec_role.id = sec_user_role.role_id AND sec_user.id = :userId", nativeQuery = true)
+    @Query(value = "SELECT role.* FROM role, user, user_roles WHERE user.id = user_roles.user_id AND role.id = user_roles.role_id AND user.id = :userId", nativeQuery = true)
     List<Role> selectByUserId(@Param("userId") Long userId);
 }

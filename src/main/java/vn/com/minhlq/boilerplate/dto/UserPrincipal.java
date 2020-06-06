@@ -1,14 +1,14 @@
-package vn.com.minhlq.boilerplate.vo;
+package vn.com.minhlq.boilerplate.dto;
 
-import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import vn.com.minhlq.boilerplate.common.Consts;
+import vn.com.minhlq.boilerplate.common.CommonConst;
 import vn.com.minhlq.boilerplate.model.Permission;
 import vn.com.minhlq.boilerplate.model.Role;
 import vn.com.minhlq.boilerplate.model.User;
@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- * 自定义User
+ * Customize User
  * </p>
  *
- * @package:
+ * @package: vn.com.minhlq.boilerplate.dto
  * @description:
  * @author: MinhLQ
  * @date: Created in 2020-06-04 14:15
@@ -36,78 +36,76 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserPrincipal implements UserDetails {
     /**
-     * 主键
+     * Primary key
      */
     private Long id;
 
     /**
-     * 用户名
+     * Username
      */
     private String username;
 
     /**
-     * 密码
+     * Password
      */
     @JsonIgnore
     private String password;
 
     /**
-     * 昵称
+     * Nick name
      */
     private String nickname;
 
     /**
-     * 手机
+     * Phone numbers
      */
     private String phone;
 
     /**
-     * 邮箱
+     * Email
      */
     private String email;
 
     /**
-     * 生日
+     * Birthday
      */
     private Long birthday;
 
     /**
-     * 性别，男-1，女-2
+     * Gender, male-1, female-2
      */
     private Integer sex;
 
     /**
-     * 状态，启用-1，禁用-0
+     * Status, enable-1, disable-0
      */
     private Integer status;
 
     /**
-     * 创建时间
+     * Create time
      */
     private Long createTime;
 
     /**
-     * 更新时间
+     * Update time
      */
     private Long updateTime;
 
     /**
-     * 用户角色列表
+     * List roles of user
      */
     private List<String> roles;
 
     /**
-     * 用户权限列表
+     * List user permissions
      */
     private Collection<? extends GrantedAuthority> authorities;
 
     public static UserPrincipal create(User user, List<Role> roles, List<Permission> permissions) {
-        List<String> roleNames = roles.stream()
-            .map(Role::getName)
-            .collect(Collectors.toList());
+        List<String> roleNames = roles.stream().map(Role::getName).collect(Collectors.toList());
 
         List<GrantedAuthority> authorities = permissions.stream()
-            .filter(permission -> StrUtil.isNotBlank(permission.getPermission()))
+            .filter(permission -> StringUtils.isNotBlank(permission.getPermission()))
             .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
             .collect(Collectors.toList());
 
@@ -146,6 +144,6 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return Objects.equals(this.status, Consts.ENABLE);
+        return Objects.equals(this.status, CommonConst.ENABLE);
     }
 }

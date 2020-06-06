@@ -1,6 +1,5 @@
 package vn.com.minhlq.boilerplate.exception.handler;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -14,8 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import vn.com.minhlq.boilerplate.common.ApiResponse;
-import vn.com.minhlq.boilerplate.common.BaseException;
 import vn.com.minhlq.boilerplate.common.Status;
+import vn.com.minhlq.boilerplate.exception.BaseException;
+import vn.com.minhlq.boilerplate.util.CollectionUtil;
 
 import javax.validation.ConstraintViolationException;
 
@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
                 .getDefaultMessage(), null);
         } else if (e instanceof ConstraintViolationException) {
             log.error(LOGGER_PREFIX + "ConstraintViolationException", e);
-            return ApiResponse.of(Status.BAD_REQUEST.getCode(), CollUtil.getFirst(((ConstraintViolationException) e).getConstraintViolations())
+            return ApiResponse.of(Status.BAD_REQUEST.getCode(), CollectionUtil.getFirst(((ConstraintViolationException) e).getConstraintViolations())
                 .getMessage(), null);
         } else if (e instanceof MethodArgumentTypeMismatchException) {
             log.error(LOGGER_PREFIX + "MethodArgumentTypeMismatchException: Parameter name {}, Exception information {}", ((MethodArgumentTypeMismatchException) e).getName(), ((MethodArgumentTypeMismatchException) e).getMessage());

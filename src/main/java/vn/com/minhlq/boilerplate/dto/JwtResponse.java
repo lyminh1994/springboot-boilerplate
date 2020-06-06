@@ -1,4 +1,4 @@
-package vn.com.minhlq.boilerplate.vo;
+package vn.com.minhlq.boilerplate.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,10 +6,10 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * JWT 响应返回
+ * JWT Response
  * </p>
  *
- * @package:
+ * @package: vn.com.minhlq.boilerplate.dto
  * @description:
  * @author: MinhLQ
  * @date: Created in 2020-06-04 14:15
@@ -22,11 +22,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class JwtResponse {
     /**
-     * token 字段
+     * token field
      */
     private String token;
     /**
-     * token类型
+     * token type
      */
     private String tokenType = "Bearer";
 

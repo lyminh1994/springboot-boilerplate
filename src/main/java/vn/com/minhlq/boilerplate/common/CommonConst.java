@@ -13,7 +13,7 @@ package vn.com.minhlq.boilerplate.common;
  * @version: v1.0
  * @modified: MinhLQ
  */
-public interface Consts {
+public interface CommonConst {
 
     /**
      * Enable

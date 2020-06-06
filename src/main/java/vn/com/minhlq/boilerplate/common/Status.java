@@ -95,7 +95,7 @@ public enum Status implements IStatus {
     /**
      * Unable to kick out yourself manually, please try to logout!
      */
-    KICKOUT_SELF(5004, "Unable to kick out yourself manually, please try to logout!");
+    KICK_OUT_SELF(5004, "Unable to kick out yourself manually, please try to logout!");
 
     /**
      * Status code
@@ -115,8 +115,7 @@ public enum Status implements IStatus {
     public static Status fromCode(Integer code) {
         Status[] statuses = Status.values();
         for (Status status : statuses) {
-            if (status.getCode()
-                .equals(code)) {
+            if (status.getCode().equals(code)) {
                 return status;
             }
         }
