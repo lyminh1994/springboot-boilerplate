@@ -8,12 +8,13 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import vn.com.minhlq.boilerplate.BoilerplateApplicationTests;
 import vn.com.minhlq.boilerplate.model.User;
+import vn.com.minhlq.boilerplate.repository.UserRepository;
 
 import java.util.List;
 
 /**
  * <p>
- * UserRepository 测试
+ * UserRepository Test
  * </p>
  *
  * @package:
@@ -35,6 +36,6 @@ public class UserRepositoryTest extends BoilerplateApplicationTests {
         List<String> usernameList = Lists.newArrayList("admin", "user");
         List<User> userList = userRepository.findByUsernameIn(usernameList);
         Assert.assertEquals(2, userList.size());
-        log.info("【userList】= {}", userList);
+        log.info("[userList]= {}", userList);
     }
 }

@@ -4,12 +4,12 @@ import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import vn.com.minhlq.boilerplate.common.CommonConst;
+import vn.com.minhlq.boilerplate.constant.CommonConst;
 import vn.com.minhlq.boilerplate.common.PageResult;
-import vn.com.minhlq.boilerplate.dto.OnlineUser;
+import vn.com.minhlq.boilerplate.dto.OnlineUserDto;
 import vn.com.minhlq.boilerplate.model.User;
-import vn.com.minhlq.boilerplate.payload.PageCondition;
-import vn.com.minhlq.boilerplate.repositories.UserRepository;
+import vn.com.minhlq.boilerplate.common.PageRequest;
+import vn.com.minhlq.boilerplate.repository.UserRepository;
 import vn.com.minhlq.boilerplate.service.MonitorService;
 import vn.com.minhlq.boilerplate.util.RedisUtil;
 import vn.com.minhlq.boilerplate.util.SecurityUtil;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- * Monitor Service
+ * Monitor Service Implementation
  * </p>
  *
  * @package: vn.com.minhlq.boilerplate.services
@@ -48,7 +48,7 @@ public class MonitorServiceImpl implements MonitorService {
      * @return Online user pagination list
      */
     @Override
-    public PageResult<OnlineUser> onlineUser(PageCondition pageCondition) {
+    public PageResult<OnlineUserDto> onlineUser(PageRequest pageCondition) {
         PageResult<String> keys = redisUtil.findKeysForPage(CommonConst.REDIS_JWT_KEY_PREFIX + CommonConst.SYMBOL_STAR, pageCondition.getCurrentPage(), pageCondition.getPageSize());
         List<String> rows = keys.getRows();
         Long total = keys.getTotal();
@@ -61,8 +61,8 @@ public class MonitorServiceImpl implements MonitorService {
         List<User> userList = userRepository.findByUsernameIn(usernameList);
 
         // Encapsulate online user information
-        List<OnlineUser> onlineUserList = Lists.newArrayList();
-        userList.forEach(user -> onlineUserList.add(OnlineUser.create(user)));
+        List<OnlineUserDto> onlineUserList = Lists.newArrayList();
+        userList.forEach(user -> onlineUserList.add(OnlineUserDto.create(user)));
 
         return new PageResult<>(onlineUserList, total);
     }
@@ -70,7 +70,7 @@ public class MonitorServiceImpl implements MonitorService {
     /**
      * Kick out online users
      *
-     * @param names Username list
+     * @param names List<String>
      */
     @Override
     public void kickOut(List<String> names) {

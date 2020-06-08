@@ -10,10 +10,11 @@ import vn.com.minhlq.boilerplate.BoilerplateApplicationTests;
 import vn.com.minhlq.boilerplate.model.*;
 import vn.com.minhlq.boilerplate.model.unionkey.RolePermissionsKey;
 import vn.com.minhlq.boilerplate.model.unionkey.UserRolesKey;
+import vn.com.minhlq.boilerplate.repository.*;
 
 /**
  * <p>
- * 数据初始化测试
+ * Data initialization test
  * </p>
  *
  * @package:
@@ -63,14 +64,14 @@ public class DataInitTest extends BoilerplateApplicationTests {
         createUserRoleRelation(user.getId(), roleUser.getId());
 
         // 页面权限
-        Permission testPagePerm = createPermission("/test", "测试页面", 1, "page:test", null, 1, 0L);
+        Permission testPagePerm = createPermission("/test", "Test page", 1, "page:test", null, 1, 0L);
         // 按钮权限
-        Permission testBtnQueryPerm = createPermission("/**/test", "测试页面-查询", 2, "btn:test:query", "GET", 1, testPagePerm.getId());
-        Permission testBtnPermInsert = createPermission("/**/test", "测试页面-添加", 2, "btn:test:insert", "POST", 2, testPagePerm.getId());
+        Permission testBtnQueryPerm = createPermission("/**/test", "Test page-query", 2, "btn:test:query", "GET", 1, testPagePerm.getId());
+        Permission testBtnPermInsert = createPermission("/**/test", "Test page-add", 2, "btn:test:insert", "POST", 2, testPagePerm.getId());
 
-        Permission monitorOnlinePagePerm = createPermission("/monitor", "监控在线用户页面", 1, "page:monitor:online", null, 2, 0L);
-        Permission monitorOnlineBtnQueryPerm = createPermission("/**/api/monitor/online/user", "在线用户页面-查询", 2, "btn:monitor:online:query", "GET", 1, monitorOnlinePagePerm.getId());
-        Permission monitorOnlineBtnKickOutPerm = createPermission("/**/api/monitor/online/user/kick-out", "在线用户页面-踢出", 2, "btn:monitor:online:kick-out", "DELETE", 2, monitorOnlinePagePerm.getId());
+        Permission monitorOnlinePagePerm = createPermission("/monitor", "Monitor online user pages", 1, "page:monitor:online", null, 2, 0L);
+        Permission monitorOnlineBtnQueryPerm = createPermission("/**/api/monitor/online/user", "Online user page-query", 2, "btn:monitor:online:query", "GET", 1, monitorOnlinePagePerm.getId());
+        Permission monitorOnlineBtnKickOutPerm = createPermission("/**/api/monitor/online/user/kick-out", "Online user page-kick out", 2, "btn:monitor:online:kick-out", "DELETE", 2, monitorOnlinePagePerm.getId());
 
         createRolePermissionRelation(roleAdmin.getId(), testPagePerm.getId());
         createRolePermissionRelation(roleUser.getId(), testPagePerm.getId());
@@ -117,8 +118,8 @@ public class DataInitTest extends BoilerplateApplicationTests {
     private Role createRole(boolean isAdmin) {
         Role role = new Role();
         role.setId(snowflake.nextId());
-        role.setName(isAdmin ? "管理员" : "普通用户");
-        role.setDescription(isAdmin ? "超级管理员" : "普通用户");
+        role.setName(isAdmin ? "Admin" : "User");
+        role.setDescription(isAdmin ? "Super Administrator" : "General User");
         role.setCreateTime(DateUtil.current(false));
         role.setUpdateTime(DateUtil.current(false));
         roleRepository.save(role);
@@ -129,10 +130,10 @@ public class DataInitTest extends BoilerplateApplicationTests {
         User user = new User();
         user.setId(snowflake.nextId());
         user.setUsername(isAdmin ? "admin" : "user");
-        user.setNickname(isAdmin ? "管理员" : "普通用户");
+        user.setNickname(isAdmin ? "Administrator" : "General User");
         user.setPassword(encoder.encode("123456"));
         user.setBirthday(DateTime.of("1994-11-22", "yyyy-MM-dd").getTime());
-        user.setEmail((isAdmin ? "admin" : "user") + "@xkcoding.com");
+        user.setEmail((isAdmin ? "admin" : "user") + "@gmail.com");
         user.setPhone(isAdmin ? "17300000000" : "17300001111");
         user.setSex(1);
         user.setStatus(1);

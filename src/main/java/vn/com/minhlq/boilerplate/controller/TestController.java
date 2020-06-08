@@ -1,19 +1,15 @@
-package vn.com.minhlq.boilerplate.controller;
+package vn.com.minhlq.boilerplate.controller.api;
 
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import vn.com.minhlq.boilerplate.common.ApiResponse;
-import vn.com.minhlq.boilerplate.common.Status;
-import vn.com.minhlq.boilerplate.model.Permission;
-import vn.com.minhlq.boilerplate.model.Role;
+import vn.com.minhlq.boilerplate.constant.Status;
 import vn.com.minhlq.boilerplate.model.User;
-import vn.com.minhlq.boilerplate.repositories.PermissionRepository;
-import vn.com.minhlq.boilerplate.repositories.RoleRepository;
-import vn.com.minhlq.boilerplate.repositories.UserRepository;
+import vn.com.minhlq.boilerplate.security.service.UserDetailsServiceImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +17,7 @@ import java.util.List;
  * Test Controller
  * </p>
  *
- * @package: vn.com.minhlq.boilerplate.controller
+ * @package: vn.com.minhlq.boilerplate.controller.api
  * @description:
  * @author: MinhLQ
  * @date: Created in 2020-06-04 14:15
@@ -35,25 +31,22 @@ import java.util.List;
 public class TestController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private PermissionRepository permissionRepository;
+    PasswordEncoder passwordEncoder;
 
     @GetMapping
     public ApiResponse list() {
         log.info("Test get list");
-        List<Object> result = new ArrayList<>();
-        List<User> users = userRepository.findAll();
-        List<Role> roles = roleRepository.findAll();
-        List<Permission> permissions = permissionRepository.findAll();
-        result.add(users);
-        result.add(roles);
-        result.add(permissions);
-        return ApiResponse.ofStatus(Status.SUCCESS, result);
+        List<User> users = userDetailsService.getAllUser();
+        return ApiResponse.ofStatus(Status.SUCCESS, users);
+    }
+
+    @GetMapping("/gen-password")
+    public ApiResponse genPassword() {
+        log.info("Test get list");
+        return ApiResponse.ofStatus(Status.SUCCESS, passwordEncoder.encode("123456"));
     }
 
     @PostMapping

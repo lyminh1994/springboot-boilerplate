@@ -3,13 +3,13 @@ package vn.com.minhlq.boilerplate.util;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.ObjectUtils;
-import vn.com.minhlq.boilerplate.common.CommonConst;
-import vn.com.minhlq.boilerplate.dto.UserPrincipal;
+import vn.com.minhlq.boilerplate.constant.CommonConst;
+import vn.com.minhlq.boilerplate.security.service.UserPrinciple;
 
 
 /**
  * <p>
- * Spring Security tools
+ * Spring Security General Tools
  * </p>
  *
  * @package: vn.com.minhlq.boilerplate.util
@@ -20,33 +20,31 @@ import vn.com.minhlq.boilerplate.dto.UserPrincipal;
  * @version: v1.0
  * @modified: MinhLQ
  */
-public final class SecurityUtil {
+public class SecurityUtil {
 
-    private SecurityUtil() {
-
-    }
+    private SecurityUtil() {}
 
     /**
-     * Get the username of the currently logged in user
+     * Get the username of the currently login user
      *
-     * @return Username of currently logged in user
+     * @return Username of currently login user
      */
     public static String getCurrentUsername() {
-        UserPrincipal currentUser = getCurrentUser();
+        UserPrinciple currentUser = getCurrentUser();
         return ObjectUtils.isEmpty(currentUser) ? CommonConst.ANONYMOUS_NAME : currentUser.getUsername();
     }
 
     /**
      * Get current login user information
      *
-     * @return Current login user information, null when logging in anonymously
+     * @return Current login user information, null when login is anonymous
      */
-    public static UserPrincipal getCurrentUser() {
+    public static UserPrinciple getCurrentUser() {
         Object userInfo = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
+            .getAuthentication()
+            .getPrincipal();
         if (userInfo instanceof UserDetails) {
-            return (UserPrincipal) userInfo;
+            return (UserPrinciple) userInfo;
         }
         return null;
     }

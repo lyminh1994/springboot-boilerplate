@@ -2,13 +2,12 @@ package vn.com.minhlq.boilerplate.util;
 
 import cn.hutool.core.util.ReflectUtil;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.data.domain.PageRequest;
-import vn.com.minhlq.boilerplate.common.CommonConst;
-import vn.com.minhlq.boilerplate.payload.PageCondition;
+import vn.com.minhlq.boilerplate.constant.CommonConst;
+import vn.com.minhlq.boilerplate.common.PageRequest;
 
 /**
  * <p>
- * Paging tools
+ * Paging General Tools
  * </p>
  *
  * @package: vn.com.minhlq.boilerplate.util
@@ -20,14 +19,17 @@ import vn.com.minhlq.boilerplate.payload.PageCondition;
  * @modified: MinhLQ
  */
 public class PageUtil {
+
+    private PageUtil() {}
+
     /**
      * Check the paging parameter, is NULL, set the default value of the paging parameter
      *
-     * @param condition Query parameters
-     * @param clazz     Class
-     * @param <T>       {@link PageCondition}
+     * @param condition <T>
+     * @param clazz     Class<T>
+     * @param <T>       {@link PageRequest}
      */
-    public static <T extends PageCondition> void checkPageCondition(T condition, Class<T> clazz) {
+    public static <T extends PageRequest> void checkPageCondition(T condition, Class<T> clazz) {
         if (ObjectUtils.isEmpty(condition)) {
             condition = ReflectUtil.newInstance(clazz);
         }
@@ -41,13 +43,13 @@ public class PageUtil {
     }
 
     /**
-     * Build according to pagination parameters{@link PageRequest}
+     * Build according to pagination parameters{@link org.springframework.data.domain.PageRequest}
      *
      * @param condition Query parameters
-     * @param <T>       {@link PageCondition}
-     * @return {@link PageRequest}
+     * @param <T>       {@link PageRequest}
+     * @return {@link org.springframework.data.domain.PageRequest}
      */
-    public static <T extends PageCondition> PageRequest ofPageRequest(T condition) {
-        return PageRequest.of(condition.getCurrentPage(), condition.getPageSize());
+    public static <T extends PageRequest> org.springframework.data.domain.PageRequest ofPageRequest(T condition) {
+        return org.springframework.data.domain.PageRequest.of(condition.getCurrentPage(), condition.getPageSize());
     }
 }

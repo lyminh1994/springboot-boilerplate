@@ -1,9 +1,24 @@
 package vn.com.minhlq.boilerplate.util;
 
+/**
+ * <p>
+ * String General Tools
+ * </p>
+ *
+ * @package: vn.com.minhlq.boilerplate.util
+ * @description:
+ * @author: MinhLQ
+ * @date: Created in 2020-06-04 14:15
+ * @copyright: Copyright (c) 2020
+ * @version: v1.0
+ * @modified: MinhLQ
+ */
 public class StringUtil {
 
-    private StringUtil() {
+    private StringUtil() {}
 
+    public static boolean isEmpty(final CharSequence cs) {
+        return cs == null || cs.length() == 0;
     }
 
     public static String toString(CharSequence cs) {
@@ -39,10 +54,6 @@ public class StringUtil {
                 }
             }
         }
-    }
-
-    public static boolean isEmpty(final CharSequence cs) {
-        return cs == null || cs.length() == 0;
     }
 
     public static String hide(CharSequence str, int startInclude, int endExclude) {

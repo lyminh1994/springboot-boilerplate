@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import vn.com.minhlq.boilerplate.common.ApiResponse;
-import vn.com.minhlq.boilerplate.common.Status;
+import vn.com.minhlq.boilerplate.constant.Status;
 import vn.com.minhlq.boilerplate.exception.BaseException;
 import vn.com.minhlq.boilerplate.util.CollectionUtil;
 

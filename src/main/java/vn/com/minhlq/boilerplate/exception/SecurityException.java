@@ -3,7 +3,7 @@ package vn.com.minhlq.boilerplate.exception;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import vn.com.minhlq.boilerplate.common.Status;
+import vn.com.minhlq.boilerplate.constant.Status;
 
 /**
  * <p>

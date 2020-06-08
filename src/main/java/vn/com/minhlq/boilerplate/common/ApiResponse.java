@@ -1,6 +1,8 @@
 package vn.com.minhlq.boilerplate.common;
 
 import lombok.Data;
+import vn.com.minhlq.boilerplate.constant.IStatus;
+import vn.com.minhlq.boilerplate.constant.Status;
 import vn.com.minhlq.boilerplate.exception.BaseException;
 
 import java.io.Serializable;

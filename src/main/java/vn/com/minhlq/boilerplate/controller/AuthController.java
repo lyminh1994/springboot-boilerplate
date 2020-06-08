@@ -1,4 +1,4 @@
-package vn.com.minhlq.boilerplate.controller;
+package vn.com.minhlq.boilerplate.controller.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vn.com.minhlq.boilerplate.common.ApiResponse;
-import vn.com.minhlq.boilerplate.common.Status;
+import vn.com.minhlq.boilerplate.constant.Status;
 import vn.com.minhlq.boilerplate.exception.SecurityException;
-import vn.com.minhlq.boilerplate.payload.LoginRequest;
-import vn.com.minhlq.boilerplate.util.JwtUtil;
-import vn.com.minhlq.boilerplate.dto.JwtResponse;
+import vn.com.minhlq.boilerplate.payload.request.LoginRequest;
+import vn.com.minhlq.boilerplate.security.jwt.JwtProvider;
+import vn.com.minhlq.boilerplate.payload.response.JwtResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -25,7 +25,7 @@ import javax.validation.Valid;
  * Authentication Controller, including user registration, user login request
  * </p>
  *
- * @package: vn.com.minhlq.boilerplate.controller
+ * @package: vn.com.minhlq.boilerplate.controller.api
  * @description:
  * @author: MinhLQ
  * @date: Created in 2020-06-04 14:15
@@ -42,7 +42,7 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtProvider jwtProvider;
 
     /**
      * Login
@@ -53,7 +53,7 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = jwtUtil.createJWT(authentication, loginRequest.getRememberMe());
+        String jwt = jwtProvider.createJWT(authentication, loginRequest.getRememberMe());
         return ApiResponse.ofSuccess(new JwtResponse(jwt));
     }
 
@@ -64,7 +64,7 @@ public class AuthController {
     public ApiResponse logout(HttpServletRequest request) {
         try {
             // Set JWT expiration
-            jwtUtil.invalidateJWT(request);
+            jwtProvider.invalidateJWT(request);
         } catch (SecurityException e) {
             throw new SecurityException(Status.UNAUTHORIZED);
         }

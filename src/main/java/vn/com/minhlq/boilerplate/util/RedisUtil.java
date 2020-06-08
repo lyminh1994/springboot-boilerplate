@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * <p>
- * Redis Tools
+ * Redis General Tools
  * </p>
  *
  * @package: vn.com.minhlq.boilerplate.util
@@ -38,15 +38,13 @@ public class RedisUtil {
     /**
      * Get the specified format key by page, and use the scan command instead of the keys command to improve the query efficiency in the case of a large amount of data
      *
-     * @param patternKey  Key format
-     * @param currentPage Current page number
-     * @param pageSize    Element per page
+     * @param patternKey  String
+     * @param currentPage int
+     * @param pageSize    int
      * @return Get the specified format key by page
      */
     public PageResult<String> findKeysForPage(String patternKey, int currentPage, int pageSize) {
-        ScanOptions options = ScanOptions.scanOptions()
-                .match(patternKey)
-                .build();
+        ScanOptions options = ScanOptions.scanOptions().match(patternKey).build();
         RedisConnectionFactory factory = stringRedisTemplate.getConnectionFactory();
         RedisConnection rc = factory.getConnection();
         Cursor<byte[]> cursor = rc.scan(options);
@@ -66,9 +64,9 @@ public class RedisUtil {
 
         try {
             cursor.close();
-            RedisConnectionUtils.releaseConnection(rc, factory);
+            RedisConnectionUtils.releaseConnection(rc, factory, true);
         } catch (Exception e) {
-            log.warn("Redis连接关闭异常，", e);
+            log.warn("Redis connection closed abnormally，", e);
         }
 
         return new PageResult<>(result, tmpIndex);
@@ -77,16 +75,16 @@ public class RedisUtil {
     /**
      * Delete key in Redis
      *
-     * @param key Key
+     * @param key String
      */
     public void delete(String key) {
         stringRedisTemplate.delete(key);
     }
 
     /**
-     * Batch delete some keys in Redis
+     * Delete some keys in Redis
      *
-     * @param keys Key list
+     * @param keys Collection<String>
      */
     public void delete(Collection<String> keys) {
         stringRedisTemplate.delete(keys);

@@ -1,4 +1,4 @@
-package vn.com.minhlq.boilerplate.controller;
+package vn.com.minhlq.boilerplate.controller.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import vn.com.minhlq.boilerplate.common.ApiResponse;
 import vn.com.minhlq.boilerplate.common.PageResult;
-import vn.com.minhlq.boilerplate.common.Status;
-import vn.com.minhlq.boilerplate.dto.OnlineUser;
+import vn.com.minhlq.boilerplate.constant.Status;
+import vn.com.minhlq.boilerplate.dto.OnlineUserDto;
 import vn.com.minhlq.boilerplate.exception.SecurityException;
-import vn.com.minhlq.boilerplate.payload.PageCondition;
+import vn.com.minhlq.boilerplate.common.PageRequest;
 import vn.com.minhlq.boilerplate.service.MonitorService;
 import vn.com.minhlq.boilerplate.util.PageUtil;
 import vn.com.minhlq.boilerplate.util.SecurityUtil;
@@ -21,7 +21,7 @@ import java.util.List;
  * Monitor Controller, online users, manually kick out users and other functions
  * </p>
  *
- * @package: vn.com.minhlq.boilerplate.controller
+ * @package: vn.com.minhlq.boilerplate.controller.api
  * @description:
  * @author: MinhLQ
  * @date: Created in 2020-06-04 14:15
@@ -43,16 +43,16 @@ public class MonitorController {
      * @param pageCondition Paging parameters
      */
     @GetMapping("/online/user")
-    public ApiResponse onlineUser(PageCondition pageCondition) {
-        PageUtil.checkPageCondition(pageCondition, PageCondition.class);
-        PageResult<OnlineUser> pageResult = monitorService.onlineUser(pageCondition);
+    public ApiResponse onlineUser(PageRequest pageCondition) {
+        PageUtil.checkPageCondition(pageCondition, PageRequest.class);
+        PageResult<OnlineUserDto> pageResult = monitorService.onlineUser(pageCondition);
         return ApiResponse.ofSuccess(pageResult);
     }
 
     /**
      * Kick out online users in batches
      *
-     * @param names User name list
+     * @param names List<String>
      */
     @DeleteMapping("/online/user/kick-out")
     public ApiResponse kickOutOnlineUser(@RequestBody List<String> names) {
