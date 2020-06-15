@@ -1,6 +1,5 @@
 package vn.com.minhlq.boilerplate.exception.handler;
 
-import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,6 +15,7 @@ import vn.com.minhlq.boilerplate.common.ApiResponse;
 import vn.com.minhlq.boilerplate.constant.Status;
 import vn.com.minhlq.boilerplate.exception.BaseException;
 import vn.com.minhlq.boilerplate.util.CollectionUtil;
+import vn.com.minhlq.boilerplate.util.JSONUtil;
 
 import javax.validation.ConstraintViolationException;
 
@@ -23,14 +23,6 @@ import javax.validation.ConstraintViolationException;
  * <p>
  * Global unified exception handling
  * </p>
- *
- * @package: vn.com.minhlq.boilerplate.exception.handler
- * @description:
- * @author: MinhLQ
- * @date: Created in 2020-06-04 14:15
- * @copyright: Copyright (c) 2020
- * @version: v1.0
- * @modified: MinhLQ
  */
 @Slf4j
 @ControllerAdvice

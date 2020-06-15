@@ -1,6 +1,5 @@
 package vn.com.minhlq.boilerplate.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,31 +22,26 @@ import vn.com.minhlq.boilerplate.security.service.UserDetailsServiceImpl;
  * <p>
  * Security Configuration
  * </p>
- *
- * @package: vn.com.minhlq.boilerplate.config
- * @description:
- * @author: MinhLQ
- * @date: Created in 2020-06-04 14:15
- * @copyright: Copyright (c) 2020
- * @version: v1.0
- * @modified: MinhLQ
  */
 @Configuration
 @EnableWebSecurity
 @EnableConfigurationProperties(CustomConfig.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private CustomConfig customConfig;
+    private final CustomConfig customConfig;
 
-    @Autowired
-    private AccessDeniedHandler accessDeniedHandler;
+    private final AccessDeniedHandler accessDeniedHandler;
 
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public SecurityConfig(CustomConfig customConfig, AccessDeniedHandler accessDeniedHandler, UserDetailsServiceImpl userDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.customConfig = customConfig;
+        this.accessDeniedHandler = accessDeniedHandler;
+        this.userDetailsService = userDetailsService;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
 
     @Bean
     public BCryptPasswordEncoder encoder() {

@@ -8,14 +8,6 @@ import lombok.NoArgsConstructor;
  * <p>
  * JWT Response
  * </p>
- *
- * @package: vn.com.minhlq.boilerplate.dto
- * @description:
- * @author: MinhLQ
- * @date: Created in 2020-06-04 14:15
- * @copyright: Copyright (c) 2020
- * @version: v1.0
- * @modified: MinhLQ
  */
 @Data
 @NoArgsConstructor
@@ -23,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class JwtResponse {
 
     /**
-     * token field
+     * token data
      */
     private String token;
 

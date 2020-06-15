@@ -2,13 +2,12 @@ package vn.com.minhlq.boilerplate.service.impl;
 
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import vn.com.minhlq.boilerplate.constant.CommonConst;
+import vn.com.minhlq.boilerplate.common.PageRequest;
 import vn.com.minhlq.boilerplate.common.PageResult;
+import vn.com.minhlq.boilerplate.constant.CommonConst;
 import vn.com.minhlq.boilerplate.dto.OnlineUserDto;
 import vn.com.minhlq.boilerplate.model.User;
-import vn.com.minhlq.boilerplate.common.PageRequest;
 import vn.com.minhlq.boilerplate.repository.UserRepository;
 import vn.com.minhlq.boilerplate.service.MonitorService;
 import vn.com.minhlq.boilerplate.util.RedisUtil;
@@ -22,24 +21,19 @@ import java.util.stream.Collectors;
  * <p>
  * Monitor Service Implementation
  * </p>
- *
- * @package: vn.com.minhlq.boilerplate.services
- * @description:
- * @author: MinhLQ
- * @date: Created in 2020-06-04 14:15
- * @copyright: Copyright (c) 2020
- * @version: v1.0
- * @modified: MinhLQ
  */
 @Slf4j
 @Service
 public class MonitorServiceImpl implements MonitorService {
 
-    @Autowired
-    private RedisUtil redisUtil;
+    private final RedisUtil redisUtil;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public MonitorServiceImpl(RedisUtil redisUtil, UserRepository userRepository) {
+        this.redisUtil = redisUtil;
+        this.userRepository = userRepository;
+    }
 
     /**
      * Online user pagination list

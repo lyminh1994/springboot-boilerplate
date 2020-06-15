@@ -11,14 +11,6 @@ import java.util.List;
  * <p>
  * General paging parameter return
  * </p>
- *
- * @package: vn.com.minhlq.boilerplate.common
- * @description:
- * @author: MinhLQ
- * @date: Created in 2020-06-04 14:15
- * @copyright: Copyright (c) 2020
- * @version: v1.0
- * @modified: MinhLQ
  */
 @Data
 @NoArgsConstructor

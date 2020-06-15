@@ -1,10 +1,10 @@
 package vn.com.minhlq.boilerplate.security.jwt;
 
-import cn.hutool.core.date.DateUtil;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -12,8 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import vn.com.minhlq.boilerplate.constant.CommonConst;
 import vn.com.minhlq.boilerplate.constant.Status;
-import vn.com.minhlq.boilerplate.security.service.UserPrinciple;
 import vn.com.minhlq.boilerplate.exception.SecurityException;
+import vn.com.minhlq.boilerplate.security.service.UserPrinciple;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
@@ -24,27 +24,22 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
- * JWT Tools
+ * JWT General Tools
  * </p>
- *
- * @package: vn.com.minhlq.boilerplate.util
- * @description:
- * @author: MinhLQ
- * @date: Created in 2020-06-04 14:15
- * @copyright: Copyright (c) 2020
- * @version: v1.0
- * @modified: MinhLQ
  */
 @Slf4j
 @Configuration
 @EnableConfigurationProperties(JwtConfig.class)
 public class JwtProvider {
 
-    @Autowired
-    private JwtConfig jwtConfig;
+    private final JwtConfig jwtConfig;
 
-    @Autowired
-    private StringRedisTemplate stringRedisTemplate;
+    private final StringRedisTemplate stringRedisTemplate;
+
+    public JwtProvider(JwtConfig jwtConfig, StringRedisTemplate stringRedisTemplate) {
+        this.jwtConfig = jwtConfig;
+        this.stringRedisTemplate = stringRedisTemplate;
+    }
 
     /**
      * Create JWT
@@ -67,9 +62,9 @@ public class JwtProvider {
                 .claim("authorities", authorities);
 
         // Set expiration time
-        Long ttl = rememberMe ? jwtConfig.getRemember() : jwtConfig.getTtl();
+        Long ttl = BooleanUtils.isTrue(rememberMe) ? jwtConfig.getRemember() : jwtConfig.getTtl();
         if (ttl > 0) {
-            builder.setExpiration(DateUtil.offsetMillisecond(now, ttl.intValue()));
+            builder.setExpiration(DateUtils.addMilliseconds(now, ttl.intValue()));
         }
 
         String jwt = builder.compact();
@@ -83,7 +78,7 @@ public class JwtProvider {
      *
      * @param authentication User authentication information
      * @param rememberMe     Remember me
-     * @return JWT
+     * @return JWT string
      */
     public String createJWT(Authentication authentication, Boolean rememberMe) {
         UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();

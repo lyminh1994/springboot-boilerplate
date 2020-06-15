@@ -12,14 +12,6 @@ import java.util.List;
  * <p>
  * Role Repository
  * </p>
- *
- * @package: vn.com.minhlq.boilerplate.repositories
- * @description: Role Repository
- * @author: MinhLQ
- * @date: Created in 2020-06-01 21:00
- * @copyright: Copyright (c) 2020
- * @version: v1.0
- * @modified: MinhLQ
  */
 public interface RoleRepository extends JpaRepository<Role, Long>, JpaSpecificationExecutor<Role> {
     /**

@@ -3,7 +3,6 @@ package vn.com.minhlq.boilerplate.security.service;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -31,26 +30,21 @@ import java.util.stream.Collectors;
  * <p>
  * Dynamic routing authentication
  * </p>
- *
- * @package: vn.com.minhlq.boilerplate.config
- * @description:
- * @author: MinhLQ
- * @date: Created in 2020-06-04 14:15
- * @copyright: Copyright (c) 2020
- * @version: v1.0
- * @modified: MinhLQ
  */
 @Component
 public class AuthorityService {
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    @Autowired
-    private PermissionRepository permissionRepository;
+    private final PermissionRepository permissionRepository;
 
-    @Autowired
-    private RequestMappingHandlerMapping mapping;
+    private final RequestMappingHandlerMapping mapping;
+
+    public AuthorityService(RoleRepository roleRepository, PermissionRepository permissionRepository, RequestMappingHandlerMapping mapping) {
+        this.roleRepository = roleRepository;
+        this.permissionRepository = permissionRepository;
+        this.mapping = mapping;
+    }
 
     public boolean hasPermission(HttpServletRequest request, Authentication authentication) {
         checkRequest(request);
@@ -138,7 +132,8 @@ public class AuthorityService {
             url.forEach(s -> urlMapping.putAll(s, method.getMethods()
                     .stream()
                     .map(Enum::toString)
-                    .collect(Collectors.toList())));
+                    .collect(Collectors.toList()))
+            );
         });
 
         return urlMapping;

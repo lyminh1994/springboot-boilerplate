@@ -11,14 +11,6 @@ import java.io.Serializable;
  * <p>
  * Common API response
  * </p>
- *
- * @package: vn.com.minhlq.boilerplate.common
- * @description:
- * @author: MinhLQ
- * @date: Created in 2020-06-04 14:15
- * @copyright: Copyright (c) 2020
- * @version: v1.0
- * @modified: MinhLQ
  */
 @Data
 public class ApiResponse implements Serializable {
@@ -42,15 +34,13 @@ public class ApiResponse implements Serializable {
     /**
      * No-argument constructor
      */
-    private ApiResponse() {
-
-    }
+    private ApiResponse() {}
 
     /**
      * Full parameter constructor
      *
      * @param code    Status code
-     * @param message Return content
+     * @param message Return message content
      * @param data    Return data
      */
     private ApiResponse(Integer code, String message, Object data) {

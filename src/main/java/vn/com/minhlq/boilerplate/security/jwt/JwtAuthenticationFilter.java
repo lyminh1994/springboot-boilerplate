@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,27 +29,22 @@ import java.util.Set;
  * <p>
  * Jwt Authentication filter
  * </p>
- *
- * @package: vn.com.minhlq.boilerplate.config
- * @description:
- * @author: MinhLQ
- * @date: Created in 2020-06-04 14:15
- * @copyright: Copyright (c) 2020
- * @version: v1.0
- * @modified: MinhLQ
  */
 @Slf4j
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private UserDetailsServiceImpl customUserDetailsService;
+    private final UserDetailsServiceImpl customUserDetailsService;
 
-    @Autowired
-    private JwtProvider jwtProvider;
+    private final JwtProvider jwtProvider;
 
-    @Autowired
-    private CustomConfig customConfig;
+    private final CustomConfig customConfig;
+
+    public JwtAuthenticationFilter(UserDetailsServiceImpl customUserDetailsService, JwtProvider jwtProvider, CustomConfig customConfig) {
+        this.customUserDetailsService = customUserDetailsService;
+        this.jwtProvider = jwtProvider;
+        this.customConfig = customConfig;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

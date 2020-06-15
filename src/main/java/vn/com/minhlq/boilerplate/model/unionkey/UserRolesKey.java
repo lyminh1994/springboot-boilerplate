@@ -10,14 +10,6 @@ import java.io.Serializable;
  * <p>
  * User-Roles combined primary key
  * </p>
- *
- * @package: vn.com.minhlq.boilerplate.model
- * @description:
- * @author: MinhLQ
- * @date: Created in 2020-06-01 21:00
- * @copyright: Copyright (c) 2020
- * @version: v1.0
- * @modified: MinhLQ
  */
 @Data
 @Embeddable

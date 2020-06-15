@@ -11,14 +11,6 @@ import javax.persistence.Table;
  * <p>
  * Permission
  * </p>
- *
- * @package: vn.com.minhlq.boilerplate.model
- * @description:
- * @author: MinhLQ
- * @date: Created in 2020-06-01 21:00
- * @copyright: Copyright (c) 2020
- * @version: v1.0
- * @modified: MinhLQ
  */
 @Data
 @Entity
@@ -28,36 +20,43 @@ public class Permission {
      * Primary key
      */
     @Id
+    @Column(name = "id")
     private Long id;
 
     /**
      * Permission name
      */
+    @Column(name = "name")
     private String name;
 
     /**
      * When the type is page, it represents the front-end routing address, and when the type is button, it represents the back-end interface address
      */
+    @Column(name = "url")
     private String url;
 
     /**
      * Permission type, page-1, button-2
      */
+    @Column(name = "type")
     private Integer type;
 
     /**
      * Permission expression
      */
+    @Column(name = "permission")
     private String permission;
 
     /**
      * Backend interface access method
      */
+    @Column(name = "method")
     private String method;
 
     /**
      * Sort
      */
+    @Column(name = "sort")
     private Integer sort;
 
     /**

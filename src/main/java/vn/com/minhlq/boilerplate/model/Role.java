@@ -11,33 +11,29 @@ import javax.persistence.Table;
  * <p>
  * Role
  * </p>
- *
- * @package: vn.com.minhlq.boilerplate.model
- * @description:
- * @author: MinhLQ
- * @date: Created in 2020-06-01 21:00
- * @copyright: Copyright (c) 2020
- * @version: v1.0
- * @modified: MinhLQ
  */
 @Data
 @Entity
 @Table(name = "role")
 public class Role {
+
     /**
      * Primary key
      */
     @Id
+    @Column(name = "id")
     private Long id;
 
     /**
      * Role name
      */
+    @Column(name = "name")
     private String name;
 
     /**
      * Description
      */
+    @Column(name = "description")
     private String description;
 
     /**
@@ -51,4 +47,5 @@ public class Role {
      */
     @Column(name = "update_time")
     private Long updateTime;
+
 }

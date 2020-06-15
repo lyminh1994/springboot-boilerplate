@@ -12,14 +12,6 @@ import java.util.List;
  * <p>
  * Permission Repository
  * </p>
- *
- * @package: vn.com.minhlq.boilerplate.repositories
- * @description:
- * @author: MinhLQ
- * @date: Created in 2020-06-01 21:00
- * @copyright: Copyright (c) 2020
- * @version: v1.0
- * @modified: MinhLQ
  */
 public interface PermissionRepository extends JpaRepository<Permission, Long>, JpaSpecificationExecutor<Permission> {
 

@@ -16,14 +16,6 @@ import java.util.List;
  * <p>
  * UserRepository Test
  * </p>
- *
- * @package:
- * @description:
- * @author: MinhLQ
- * @date: Created in 2020-06-04 14:15
- * @copyright: Copyright (c) 2020
- * @version: v1.0
- * @modified: MinhLQ
  */
 @Slf4j
 public class UserRepositoryTest extends BoilerplateApplicationTests {

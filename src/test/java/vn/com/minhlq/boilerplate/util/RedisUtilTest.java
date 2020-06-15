@@ -1,6 +1,6 @@
 package vn.com.minhlq.boilerplate.util;
 
-import cn.hutool.json.JSONUtil;
+
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +12,6 @@ import vn.com.minhlq.boilerplate.constant.CommonConst;
  * <p>
  * Test RedisUtil
  * </p>
- *
- * @package:
- * @description:
- * @author: MinhLQ
- * @date: Created in 2020-06-04 14:15
- * @copyright: Copyright (c) 2020
- * @version: v1.0
- * @modified: MinhLQ
  */
 @Slf4j
 public class RedisUtilTest extends BoilerplateApplicationTests {

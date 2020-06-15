@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS permission;
 CREATE TABLE permission (
     id BIGINT(64) NOT NULL COMMENT 'Primary key' PRIMARY KEY,
     name VARCHAR(50) NOT NULL COMMENT 'Permission name',
-    url VARCHAR(1000) NULL COMMENT 'When the type is page, it represents the front-end routing address, and when the type is button, it represents the back-end INTerface address',
+    url VARCHAR(1000) NULL COMMENT 'When the type is page, it represents the front-end routing address, and when the type is button, it represents the back-end interface address',
     type INT(2) NOT NULL COMMENT 'Permission type, page-1, button-2',
     permission VARCHAR(50) NULL COMMENT 'Permission expression',
     method VARCHAR(50) NULL COMMENT 'Backend interface access method',
