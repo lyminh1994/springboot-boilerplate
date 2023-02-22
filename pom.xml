@@ -26,7 +26,7 @@
 		<commons.collections4.version>4.4</commons.collections4.version>
 		<poi.version>4.1.1</poi.version>
 		<poi.ooxml.version>4.1.1</poi.ooxml.version>
-		<commons.fileupload.version>1.4</commons.fileupload.version>
+		<commons.fileupload.version>1.5</commons.fileupload.version>
 		<xlsx.streamer.version>2.1.0</xlsx.streamer.version>
 	</properties>
 
